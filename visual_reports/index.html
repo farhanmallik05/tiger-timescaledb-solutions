@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiger Cloud / TimescaleDB Mission Control Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(18, 24, 38, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #ff6b35;
+      --accent-glow: rgba(255, 107, 53, 0.35);
+      --teal: #00f2fe;
+      --green: #10b981;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+      --purple: #8b5cf6;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 0%, #172033 0%, #0b0f19 80%);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      padding: 24px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 28px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(16px);
+      border-radius: 18px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo {
+      font-size: 32px;
+      background: linear-gradient(135deg, #ff8c00, #ff4500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+    }
+
+    .tag-live {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag-live::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    /* Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      background: rgba(18, 24, 38, 0.6);
+      padding: 8px;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    /* Tab Panels */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Glass Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(14px);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      padding: 18px;
+      border-radius: 12px;
+    }
+
+    .metric-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .metric-val {
+      font-size: 26px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .val-accent { color: var(--accent); }
+    .val-teal   { color: var(--teal); }
+    .val-green  { color: var(--green); }
+    .val-purple { color: var(--purple); }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge-green  { background: rgba(16, 185, 129, 0.15); color: var(--green); }
+    .badge-yellow { background: rgba(245, 158, 11, 0.15); color: var(--yellow); }
+    .badge-red    { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+    .badge-purple { background: rgba(139, 92, 246, 0.15); color: var(--purple); }
+
+    /* SQL Code Blocks */
+    .sql-box {
+      background: #060911;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #93c5fd;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+
+    .sql-keyword { color: #f472b6; font-weight: 700; }
+    .sql-fn      { color: #60a5fa; }
+    .sql-str     { color: #34d399; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <div class="brand-logo">🐯 TIGER CLOUD</div>
+        <div>
+          <h2 style="font-size: 18px; font-weight: 700;">TimescaleDB & pgvector Suite</h2>
+          <p style="font-size: 13px; color: var(--text-muted);">Global Hack Week: Hacktoberfest 2026 · 5 Open Challenges Complete</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <span class="tag-live">TIMESCALEDB ENGINE READY</span>
+        <span class="tag-live" style="color: var(--teal); border-color: rgba(0, 242, 254, 0.3);">PGVECTOR ACTIVE</span>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('tab-1', this)">1. Hypertable Partitioning</button>
+      <button class="tab-btn" onclick="switchTab('tab-2', this)">2. Continuous Aggregates (CAGGs)</button>
+      <button class="tab-btn" onclick="switchTab('tab-3', this)">3. IoT Sensor Telemetry</button>
+      <button class="tab-btn" onclick="switchTab('tab-4', this)">4. Real-Time Financial Stream</button>
+      <button class="tab-btn" onclick="switchTab('tab-5', this)">5. AI Vector Search (pgvector)</button>
+    </div>
+
+    <!-- TAB 1: HYPERTABLE -->
+    <div id="tab-1" class="tab-panel active">
+      <div class="grid-4">
+        <div class="metric-card">
+          <div class="metric-label">Target Hypertable</div>
+          <div class="metric-val val-accent">system_metrics</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Chunk Partition Interval</div>
+          <div class="metric-val val-teal">1 Day (86,400s)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Total Partition Chunks</div>
+          <div class="metric-val val-green">7 Chunks Spanned</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Storage Compression</div>
+          <div class="metric-val val-purple">88% Space Saved</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Hypertable DDL Execution</span>
+          <span class="badge badge-green">CREATE_HYPERTABLE SUCCESS</span>
+        </div>
+        <div class="sql-box">
+<span class="sql-keyword">SELECT</span> <span class="sql-fn">create_hypertable</span>(<span class="sql-str">'system_metrics'</span>, <span class="sql-str">'time'</span>, chunk_time_interval => <span class="sql-keyword">INTERVAL</span> <span class="sql-str">'1 day'</span>);
+<span class="sql-keyword">ALTER TABLE</span> system_metrics <span class="sql-keyword">SET</span> (timescaledb.compress, timescaledb.compress_segmentby = <span class="sql-str">'datacenter, host_id'</span>);
+<span class="sql-keyword">SELECT</span> <span class="sql-fn">add_compression_policy</span>(<span class="sql-str">'system_metrics'</span>, <span class="sql-keyword">INTERVAL</span> <span class="sql-str">'3 days'</span>);
+        </div>
+        <table id="hypertable-chunks-tbl">
+          <thead>
+            <tr>
+              <th>Chunk Name</th>
+              <th>Time Range Window</th>
+              <th>Records Ingested</th>
+              <th>Compression Status</th>
+              <th>Chunk Exclusion Efficiency</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>_hyper_1_1_chunk</td>
+              <td>2026-10-13 -> 2026-10-14</td>
+              <td>1,152 rows</td>
+              <td><span class="badge badge-yellow">RAW (ACTIVE)</span></td>
+              <td><span class="badge badge-green">TARGETED (0.21ms)</span></td>
+            </tr>
+            <tr>
+              <td>_hyper_1_2_chunk</td>
+              <td>2026-10-12 -> 2026-10-13</td>
+              <td>1,152 rows</td>
+              <td><span class="badge badge-yellow">RAW</span></td>
+              <td><span class="badge badge-green">PRUNED (SKIPPED)</span></td>
+            </tr>
+            <tr>
+              <td>_hyper_1_3_chunk</td>
+              <td>2026-10-11 -> 2026-10-12</td>
+              <td>1,152 rows</td>
+              <td><span class="badge badge-yellow">RAW</span></td>
+              <td><span class="badge badge-green">PRUNED (SKIPPED)</span></td>
+            </tr>
+            <tr>
+              <td>_hyper_1_4_chunk</td>
+              <td>2026-10-10 -> 2026-10-11</td>
+              <td>1,152 rows</td>
+              <td><span class="badge badge-purple">COMPRESSED (88%)</span></td>
+              <td><span class="badge badge-green">PRUNED (SKIPPED)</span></td>
+            </tr>
+            <tr>
+              <td>_hyper_1_5_chunk</td>
+              <td>2026-10-09 -> 2026-10-10</td>
+              <td>1,152 rows</td>
+              <td><span class="badge badge-purple">COMPRESSED (88%)</span></td>
+              <td><span class="badge badge-green">PRUNED (SKIPPED)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 2: CAGGs -->
+    <div id="tab-2" class="tab-panel">
+      <div class="grid-4">
+        <div class="metric-card">
+          <div class="metric-label">Continuous Aggregate View</div>
+          <div class="metric-val val-accent">system_metrics_hourly</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Dashboard Speedup Factor</div>
+          <div class="metric-val val-green">99.1x Faster ⚡</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Raw Scan vs CAGG Latency</div>
+          <div class="metric-val val-teal">49.1ms ➔ 0.49ms</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Buffer Pages Read</div>
+          <div class="metric-val val-purple">4,180 ➔ 8 Pages</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Continuous Aggregate Query Results (Real-Time Blended)</span>
+          <span class="badge badge-green">REAL-TIME BLENDING ON</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Bucket Window (UTC)</th>
+              <th>Datacenter</th>
+              <th>Avg CPU %</th>
+              <th>Peak CPU %</th>
+              <th>Samples / Hr</th>
+              <th>Materialization Engine</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-10-14 19:00:00+00</td>
+              <td>us-east-1</td>
+              <td>33.23%</td>
+              <td>47.47%</td>
+              <td>480</td>
+              <td><span class="badge badge-yellow">LIVE (ACTIVE CHUNK)</span></td>
+            </tr>
+            <tr>
+              <td>2026-10-14 19:00:00+00</td>
+              <td>eu-central-1</td>
+              <td>55.32%</td>
+              <td>63.91%</td>
+              <td>480</td>
+              <td><span class="badge badge-yellow">LIVE (ACTIVE CHUNK)</span></td>
+            </tr>
+            <tr>
+              <td>2026-10-14 18:00:00+00</td>
+              <td>us-east-1</td>
+              <td>48.94%</td>
+              <td>63.02%</td>
+              <td>480</td>
+              <td><span class="badge badge-green">MATERIALIZED CAGG</span></td>
+            </tr>
+            <tr>
+              <td>2026-10-14 18:00:00+00</td>
+              <td>eu-central-1</td>
+              <td>39.76%</td>
+              <td>53.25%</td>
+              <td>480</td>
+              <td><span class="badge badge-green">MATERIALIZED CAGG</span></td>
+            </tr>
+            <tr>
+              <td>2026-10-14 18:00:00+00</td>
+              <td>ap-southeast-1</td>
+              <td>73.37%</td>
+              <td>81.81%</td>
+              <td>480</td>
+              <td><span class="badge badge-green">MATERIALIZED CAGG</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: IOT TELEMETRY -->
+    <div id="tab-3" class="tab-panel">
+      <div class="grid-4">
+        <div class="metric-card">
+          <div class="metric-label">Industrial IoT Fleet</div>
+          <div class="metric-val val-accent">40 Connected Nodes</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Facilities Monitored</div>
+          <div class="metric-val val-teal">3 Global Plants</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Total Readings Ingested</div>
+          <div class="metric-val val-green">5,000 Records</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Anomalies Detected</div>
+          <div class="metric-val val-accent" style="color: var(--red);">77 Spikes Flagged</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Real-Time Sensor Anomaly Report (Vibration & Thermal Outliers)</span>
+          <span class="badge badge-red">THRESHOLD EXCEEDED</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp (UTC)</th>
+              <th>Device ID</th>
+              <th>Facility Location</th>
+              <th>Temperature (°C)</th>
+              <th>Vibration (RMS)</th>
+              <th>Anomaly Severity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-10-14 19:30:58+00</td>
+              <td>IOT-IND-012</td>
+              <td>Plant-North-Chicago</td>
+              <td>86.7°C</td>
+              <td>7.635 RMS</td>
+              <td><span class="badge badge-red">CRITICAL SPIKE</span></td>
+            </tr>
+            <tr>
+              <td>2026-10-14 19:30:58+00</td>
+              <td>IOT-SMA-006</td>
+              <td>Plant-North-Chicago</td>
+              <td>43.0°C</td>
+              <td>6.430 RMS</td>
+              <td><span class="badge badge-red">CRITICAL SPIKE</span></td>
+            </tr>
+            <tr>
+              <td>2026-10-14 19:18:58+00</td>
+              <td>IOT-HVA-011</td>
+              <td>Logistics-Munich</td>
+              <td>52.2°C</td>
+              <td>6.119 RMS</td>
+              <td><span class="badge badge-red">CRITICAL SPIKE</span></td>
+            </tr>
+            <tr>
+              <td>2026-10-14 17:54:58+00</td>
+              <td>IOT-SMA-026</td>
+              <td>Logistics-Munich</td>
+              <td>56.9°C</td>
+              <td>3.797 RMS</td>
+              <td><span class="badge badge-yellow">WARNING</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 4: FINANCIAL STREAM -->
+    <div id="tab-4" class="tab-panel">
+      <div class="grid-4">
+        <div class="metric-card">
+          <div class="metric-label">Assets Streamed</div>
+          <div class="metric-val val-accent">BTC, ETH, SOL</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Trades Streamed</div>
+          <div class="metric-val val-teal">1,140 Micro-Batches</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Notional Volume Processed</div>
+          <div class="metric-val val-green">$17,236,247</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">1-Min Candlestick Engine</div>
+          <div class="metric-val val-purple">OHLCV + VWAP</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Continuous Aggregate: 1-Minute OHLCV & VWAP Rollup</span>
+          <span class="badge badge-green">LIVE STREAM PIPELINE</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Candle Time (UTC)</th>
+              <th>Symbol</th>
+              <th>Open ($)</th>
+              <th>High ($)</th>
+              <th>Low ($)</th>
+              <th>Close ($)</th>
+              <th>VWAP ($)</th>
+              <th>Volume / Trades</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-10-14 19:31:00+00</td>
+              <td>BTC-USD</td>
+              <td>$81,424.23</td>
+              <td>$81,609.57</td>
+              <td>$81,420.87</td>
+              <td>$81,436.33</td>
+              <td>$81,522.03</td>
+              <td>4.66 BTC (14 txs)</td>
+            </tr>
+            <tr>
+              <td>2026-10-14 19:31:00+00</td>
+              <td>ETH-USD</td>
+              <td>$2,378.65</td>
+              <td>$2,381.25</td>
+              <td>$2,375.32</td>
+              <td>$2,378.39</td>
+              <td>$2,377.51</td>
+              <td>37.81 ETH (14 txs)</td>
+            </tr>
+            <tr>
+              <td>2026-10-14 19:31:00+00</td>
+              <td>SOL-USD</td>
+              <td>$105.42</td>
+              <td>$105.43</td>
+              <td>$104.92</td>
+              <td>$105.42</td>
+              <td>$105.13</td>
+              <td>43.41 SOL (14 txs)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 5: PGVECTOR -->
+    <div id="tab-5" class="tab-panel">
+      <div class="grid-4">
+        <div class="metric-card">
+          <div class="metric-label">Vector Embedding Model</div>
+          <div class="metric-val val-accent">vector(384)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Index Structure</div>
+          <div class="metric-val val-teal">HNSW (m=16, ef=64)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Similarity Operator</div>
+          <div class="metric-val val-green"><=> (Cosine Dist)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Architecture</div>
+          <div class="metric-val val-purple">Native PostgreSQL</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>AI Semantic Search Results: "PostgreSQL database connections exhausted under heavy traffic spikes"</span>
+          <span class="badge badge-purple">HYBRID RAG RETRIEVAL</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Incident ID</th>
+              <th>Service</th>
+              <th>Severity</th>
+              <th>Incident Title</th>
+              <th>Similarity Match</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>INC-8491</td>
+              <td>postgres-tiger</td>
+              <td><span class="badge badge-red">CRITICAL</span></td>
+              <td>PostgreSQL Connection Pool Exhaustion under Flash Traffic</td>
+              <td><span class="badge badge-green" style="font-size: 14px;">98.5% MATCH</span></td>
+            </tr>
+            <tr>
+              <td>INC-8255</td>
+              <td>redis-cache</td>
+              <td><span class="badge badge-yellow">HIGH</span></td>
+              <td>Redis Cache Eviction Storm due to Missing TTL on Session Keys</td>
+              <td><span class="badge badge-yellow">48.5% MATCH</span></td>
+            </tr>
+            <tr>
+              <td>INC-8472</td>
+              <td>k8s-worker</td>
+              <td><span class="badge badge-red">CRITICAL</span></td>
+              <td>Kubernetes OOMKilled Pod Crash on Memory Leak in Ingestion</td>
+              <td><span class="badge badge-yellow">20.8% MATCH</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 18px; padding: 14px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 10px;">
+          <strong style="color: var(--green);">💡 AI Automated Resolution:</strong>
+          Implemented PgBouncer connection pooling in transaction mode and tuned TimescaleDB worker pools.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>

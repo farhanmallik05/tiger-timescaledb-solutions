@@ -1,0 +1,82 @@
+{
+  "challenge_id": "01a11b64-a4cd-bf31-7f19-8f2f8904f69d",
+  "challenge_title": "Ingest real-time financial data into Tiger Cloud",
+  "hypertable": "market_trades",
+  "symbols_tracked": [
+    "BTC-USD",
+    "ETH-USD",
+    "SOL-USD"
+  ],
+  "total_trades_ingested": 1182,
+  "total_notional_volume_usd": 18076509.38,
+  "candles_calculated": 18,
+  "sample_candles": [
+    {
+      "candle_time": "2026-10-14 19:32:00+00",
+      "symbol": "BTC-USD",
+      "open": 81311.21,
+      "high": 81344.53,
+      "low": 81136.41,
+      "close": 81246.28,
+      "volume": 4.7974,
+      "vwap": 81199.89,
+      "trades": 13
+    },
+    {
+      "candle_time": "2026-10-14 19:32:00+00",
+      "symbol": "ETH-USD",
+      "open": 2446.38,
+      "high": 2449.21,
+      "low": 2443.06,
+      "close": 2449.21,
+      "volume": 51.55,
+      "vwap": 2446.04,
+      "trades": 13
+    },
+    {
+      "candle_time": "2026-10-14 19:32:00+00",
+      "symbol": "SOL-USD",
+      "open": 101.83,
+      "high": 101.94,
+      "low": 101.52,
+      "close": 101.85,
+      "volume": 55.0815,
+      "vwap": 101.75,
+      "trades": 15
+    },
+    {
+      "candle_time": "2026-10-14 19:33:00+00",
+      "symbol": "BTC-USD",
+      "open": 81250.75,
+      "high": 81271.99,
+      "low": 81144.58,
+      "close": 81144.58,
+      "volume": 5.314,
+      "vwap": 81201.87,
+      "trades": 13
+    },
+    {
+      "candle_time": "2026-10-14 19:33:00+00",
+      "symbol": "ETH-USD",
+      "open": 2445.93,
+      "high": 2450.91,
+      "low": 2445.93,
+      "close": 2447.63,
+      "volume": 52.8069,
+      "vwap": 2448.52,
+      "trades": 13
+    },
+    {
+      "candle_time": "2026-10-14 19:33:00+00",
+      "symbol": "SOL-USD",
+      "open": 101.49,
+      "high": 101.74,
+      "low": 101.42,
+      "close": 101.66,
+      "volume": 50.2431,
+      "vwap": 101.52,
+      "trades": 15
+    }
+  ],
+  "verified_at": "2026-10-14T19:33:19.927724+00:00"
+}

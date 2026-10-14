@@ -1,0 +1,82 @@
+{
+  "challenge_id": "01a11b54-794b-ea57-035a-4e2b701feb8d",
+  "challenge_title": "Set up a Tiger Cloud service and create your first Hypertable",
+  "hypertable": "system_metrics",
+  "chunk_interval": "1 day",
+  "total_chunks": 7,
+  "total_records": 8064,
+  "compression_ratio": "88% space saved on compressed chunks",
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "chunk_name": "_timescaledb_internal._hyper_1_1_chunk",
+      "range_start": "2026-10-13T00:00:00+00:00",
+      "range_end": "2026-10-14T00:00:00+00:00",
+      "records": 1152,
+      "is_compressed": false,
+      "size_raw_mb": 0.48,
+      "size_compressed_mb": null
+    },
+    {
+      "chunk_id": 2,
+      "chunk_name": "_timescaledb_internal._hyper_1_2_chunk",
+      "range_start": "2026-10-12T00:00:00+00:00",
+      "range_end": "2026-10-13T00:00:00+00:00",
+      "records": 1152,
+      "is_compressed": false,
+      "size_raw_mb": 0.48,
+      "size_compressed_mb": null
+    },
+    {
+      "chunk_id": 3,
+      "chunk_name": "_timescaledb_internal._hyper_1_3_chunk",
+      "range_start": "2026-10-11T00:00:00+00:00",
+      "range_end": "2026-10-12T00:00:00+00:00",
+      "records": 1152,
+      "is_compressed": false,
+      "size_raw_mb": 0.48,
+      "size_compressed_mb": null
+    },
+    {
+      "chunk_id": 4,
+      "chunk_name": "_timescaledb_internal._hyper_1_4_chunk",
+      "range_start": "2026-10-10T00:00:00+00:00",
+      "range_end": "2026-10-11T00:00:00+00:00",
+      "records": 1152,
+      "is_compressed": true,
+      "size_raw_mb": 0.48,
+      "size_compressed_mb": 0.06
+    },
+    {
+      "chunk_id": 5,
+      "chunk_name": "_timescaledb_internal._hyper_1_5_chunk",
+      "range_start": "2026-10-09T00:00:00+00:00",
+      "range_end": "2026-10-10T00:00:00+00:00",
+      "records": 1152,
+      "is_compressed": true,
+      "size_raw_mb": 0.48,
+      "size_compressed_mb": 0.06
+    },
+    {
+      "chunk_id": 6,
+      "chunk_name": "_timescaledb_internal._hyper_1_6_chunk",
+      "range_start": "2026-10-08T00:00:00+00:00",
+      "range_end": "2026-10-09T00:00:00+00:00",
+      "records": 1152,
+      "is_compressed": true,
+      "size_raw_mb": 0.48,
+      "size_compressed_mb": 0.06
+    },
+    {
+      "chunk_id": 7,
+      "chunk_name": "_timescaledb_internal._hyper_1_7_chunk",
+      "range_start": "2026-10-07T00:00:00+00:00",
+      "range_end": "2026-10-08T00:00:00+00:00",
+      "records": 1152,
+      "is_compressed": true,
+      "size_raw_mb": 0.48,
+      "size_compressed_mb": 0.06
+    }
+  ],
+  "verified_at": "2026-10-14T19:33:18.453732+00:00"
+}

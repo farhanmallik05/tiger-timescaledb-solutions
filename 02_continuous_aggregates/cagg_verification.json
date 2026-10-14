@@ -1,0 +1,117 @@
+{
+  "challenge_id": "01a11b5a-2e18-6061-22b7-5bd8eecbc563",
+  "challenge_title": "Accelerate Dashboards with Continuous Aggregates",
+  "cagg_view": "system_metrics_hourly",
+  "bucket_interval": "1 hour",
+  "materialized_buckets": 144,
+  "realtime_aggregate": true,
+  "benchmark": {
+    "raw_latency_ms": 49.14,
+    "cagg_latency_ms": 0.496,
+    "speedup_factor": "99.1x",
+    "io_reduction_pct": "99.8%"
+  },
+  "sample_buckets": [
+    {
+      "bucket": "2026-10-14 19:00:00+00",
+      "datacenter": "us-east-1",
+      "avg_cpu": 47.1,
+      "max_cpu": 61.53,
+      "min_cpu": 36.3,
+      "avg_memory_gb": 33.87,
+      "sample_count": 480,
+      "source": "REAL-TIME (ACTIVE CHUNK)"
+    },
+    {
+      "bucket": "2026-10-14 19:00:00+00",
+      "datacenter": "eu-central-1",
+      "avg_cpu": 71.21,
+      "max_cpu": 89.26,
+      "min_cpu": 61.85,
+      "avg_memory_gb": 45.27,
+      "sample_count": 480,
+      "source": "REAL-TIME (ACTIVE CHUNK)"
+    },
+    {
+      "bucket": "2026-10-14 19:00:00+00",
+      "datacenter": "ap-southeast-1",
+      "avg_cpu": 33.0,
+      "max_cpu": 47.28,
+      "min_cpu": 21.06,
+      "avg_memory_gb": 36.32,
+      "sample_count": 480,
+      "source": "REAL-TIME (ACTIVE CHUNK)"
+    },
+    {
+      "bucket": "2026-10-14 18:00:00+00",
+      "datacenter": "us-east-1",
+      "avg_cpu": 49.52,
+      "max_cpu": 64.12,
+      "min_cpu": 42.05,
+      "avg_memory_gb": 31.23,
+      "sample_count": 480,
+      "source": "MATERIALIZED CAGG"
+    },
+    {
+      "bucket": "2026-10-14 18:00:00+00",
+      "datacenter": "eu-central-1",
+      "avg_cpu": 55.68,
+      "max_cpu": 69.14,
+      "min_cpu": 48.39,
+      "avg_memory_gb": 51.21,
+      "sample_count": 480,
+      "source": "MATERIALIZED CAGG"
+    },
+    {
+      "bucket": "2026-10-14 18:00:00+00",
+      "datacenter": "ap-southeast-1",
+      "avg_cpu": 49.86,
+      "max_cpu": 62.17,
+      "min_cpu": 44.3,
+      "avg_memory_gb": 50.03,
+      "sample_count": 480,
+      "source": "MATERIALIZED CAGG"
+    },
+    {
+      "bucket": "2026-10-14 17:00:00+00",
+      "datacenter": "us-east-1",
+      "avg_cpu": 50.22,
+      "max_cpu": 62.33,
+      "min_cpu": 41.65,
+      "avg_memory_gb": 47.76,
+      "sample_count": 480,
+      "source": "MATERIALIZED CAGG"
+    },
+    {
+      "bucket": "2026-10-14 17:00:00+00",
+      "datacenter": "eu-central-1",
+      "avg_cpu": 60.24,
+      "max_cpu": 69.37,
+      "min_cpu": 46.87,
+      "avg_memory_gb": 34.03,
+      "sample_count": 480,
+      "source": "MATERIALIZED CAGG"
+    },
+    {
+      "bucket": "2026-10-14 17:00:00+00",
+      "datacenter": "ap-southeast-1",
+      "avg_cpu": 72.28,
+      "max_cpu": 88.48,
+      "min_cpu": 64.13,
+      "avg_memory_gb": 46.16,
+      "sample_count": 480,
+      "source": "MATERIALIZED CAGG"
+    },
+    {
+      "bucket": "2026-10-14 16:00:00+00",
+      "datacenter": "us-east-1",
+      "avg_cpu": 55.12,
+      "max_cpu": 71.17,
+      "min_cpu": 47.12,
+      "avg_memory_gb": 55.44,
+      "sample_count": 480,
+      "source": "MATERIALIZED CAGG"
+    }
+  ],
+  "verified_at": "2026-10-14T19:33:18.565472+00:00"
+}

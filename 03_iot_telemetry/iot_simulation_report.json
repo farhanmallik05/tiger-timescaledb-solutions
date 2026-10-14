@@ -1,0 +1,106 @@
+{
+  "challenge_id": "01a11b5c-844d-86ce-9146-6afa2915c842",
+  "challenge_title": "Simulate an IoT sensor dataset for testing and development",
+  "hypertable": "iot_telemetry",
+  "total_readings": 5000,
+  "devices_count": 40,
+  "facilities": [
+    "Plant-North-Chicago",
+    "Fab-Austin-TX",
+    "Logistics-Munich"
+  ],
+  "anomalies_detected": 77,
+  "anomalies_sample": [
+    {
+      "time": "2026-10-14 19:33:18+00",
+      "device_id": "IOT-SMA-006",
+      "facility_id": "Plant-North-Chicago",
+      "device_type": "smart-flow-meter",
+      "temperature_c": 48.68,
+      "vibration_rms": 6.371,
+      "severity": "CRITICAL"
+    },
+    {
+      "time": "2026-10-14 19:21:18+00",
+      "device_id": "IOT-IND-012",
+      "facility_id": "Plant-North-Chicago",
+      "device_type": "industrial-turbine",
+      "temperature_c": 83.57,
+      "vibration_rms": 6.639,
+      "severity": "CRITICAL"
+    },
+    {
+      "time": "2026-10-14 18:57:18+00",
+      "device_id": "IOT-HVA-011",
+      "facility_id": "Logistics-Munich",
+      "device_type": "hvac-air-handler",
+      "temperature_c": 39.9,
+      "vibration_rms": 5.161,
+      "severity": "CRITICAL"
+    },
+    {
+      "time": "2026-10-14 18:45:18+00",
+      "device_id": "IOT-IND-004",
+      "facility_id": "Fab-Austin-TX",
+      "device_type": "industrial-turbine",
+      "temperature_c": 99.18,
+      "vibration_rms": 5.833,
+      "severity": "CRITICAL"
+    },
+    {
+      "time": "2026-10-14 18:33:18+00",
+      "device_id": "IOT-HVA-019",
+      "facility_id": "Fab-Austin-TX",
+      "device_type": "hvac-air-handler",
+      "temperature_c": 50.06,
+      "vibration_rms": 5.267,
+      "severity": "CRITICAL"
+    },
+    {
+      "time": "2026-10-14 18:09:18+00",
+      "device_id": "IOT-HVA-019",
+      "facility_id": "Fab-Austin-TX",
+      "device_type": "hvac-air-handler",
+      "temperature_c": 44.22,
+      "vibration_rms": 6.021,
+      "severity": "CRITICAL"
+    },
+    {
+      "time": "2026-10-14 17:57:18+00",
+      "device_id": "IOT-HVA-035",
+      "facility_id": "Logistics-Munich",
+      "device_type": "hvac-air-handler",
+      "temperature_c": 48.6,
+      "vibration_rms": 5.084,
+      "severity": "CRITICAL"
+    },
+    {
+      "time": "2026-10-14 17:45:18+00",
+      "device_id": "IOT-COL-001",
+      "facility_id": "Fab-Austin-TX",
+      "device_type": "cold-chain-chiller",
+      "temperature_c": 2.8,
+      "vibration_rms": 6.268,
+      "severity": "CRITICAL"
+    },
+    {
+      "time": "2026-10-14 17:45:18+00",
+      "device_id": "IOT-COL-029",
+      "facility_id": "Logistics-Munich",
+      "device_type": "cold-chain-chiller",
+      "temperature_c": 8.43,
+      "vibration_rms": 4.546,
+      "severity": "CRITICAL"
+    },
+    {
+      "time": "2026-10-14 17:33:18+00",
+      "device_id": "IOT-COL-033",
+      "facility_id": "Plant-North-Chicago",
+      "device_type": "cold-chain-chiller",
+      "temperature_c": 12.73,
+      "vibration_rms": 4.493,
+      "severity": "WARNING"
+    }
+  ],
+  "verified_at": "2026-10-14T19:33:18.716803+00:00"
+}
